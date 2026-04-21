@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container hero-section d-flex flex-column align-items-center justify-content-center text-center">
+    
+    <div class="glass-container">
+        <h1 class="hero-title">EDA Visualizer</h1>
+
+        <p class="hero-subtitle">
+            Upload your dataset and uncover insights with interactive visualizations and intrinsic analysis.
+        </p>
+
+        <div class="mt-4">
+            <a href="#" class="btn btn-outline-light btn-lg m-3 no-hover-btn" style="border-color: aqua; border-radius: 30px; color: aqua" id="openUploadModal">Upload Dataset</a>
+            <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg no-hover-btn" style="border-color: aqua; border-radius: 30px; color: aqua">Learn More</a>
+        </div>
+    </div>
+
+</div>
+<div id="uploadModal" class="custom-modal" style="border: 1px aqua">
+    <div class="modal-content-glass">
+
+        <span class="close-btn" id="closeModal">&times;</span>
+
+        <h2>Upload Dataset</h2>
+
+        <form id="uploadForm" method="post" action="/upload" enctype="multipart/form-data">
+            <div class="file-upload-container">
+                <label for="formFileLg" class="file-upload-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span class="upload-text">Choose or drag a file here</span>
+                    <span class="file-name" id="fileName">No file chosen</span>
+                </label>
+                <input class="form-control" id="formFileLg" type="file" name="file" style="display: none;">
+            </div>
+            <button type="submit" class="btn btn-outline-light mt-4 no-hover-btn" style="border-color: aqua; border-radius: 30px; color: aqua; font-size: 18px;">
+                 <i class="bi bi-upload me-2"></i>
+                Upload
+            </button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

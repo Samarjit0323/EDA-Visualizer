@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container hero-section d-flex flex-column align-items-center justify-content-center text-center">
+
+    <div class="glass-container ">
+        <h2 class="contact-title" style="font-family: 'Playpen Sans', sans serif; color: aqua">Get in Touch</h2>
+        <p class="contact-subtitle">
+            Have questions, feedback, or suggestions? We'd love to hear from you.
+        </p>
+
+        <form method="post" action="/contact" class="contact-form" style="align-items: stretch; max-width: 500px; width: 100%;">
+            <div class="mb-3">
+                <input type="text" name="name" placeholder="Your Name" required class="form-control custom-input">
+            </div>
+
+            <div class="mb-3">
+                <input type="email" name="email" placeholder="Your Email" required class="form-control custom-input">
+            </div>
+
+            <div class="mb-3">
+                <input type="text" name="subject" placeholder="Subject" class="form-control custom-input">
+            </div>
+
+            <div class="mb-3">
+                <textarea name="message" rows="4" placeholder="Your Message" required
+                    class="form-control custom-input"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-outline-light no-hover-btn mt-3" style="border-radius: 30px; font-size: 18px;">
+                Send Message
+            </button>
+
+        </form>
+
+        <div class="contact-footer mt-4">
+            <p>Or reach out directly:</p>
+            <div class="contact-links" style="font-size: 18px;">
+                <a href="mailto:samarjit19official@gmail.com">
+                    <i class="bi bi-envelope-at me-4 "></i>
+                    <span style="font-family: 'Playpen Sans', sans-serif;">Email</span>
+                </a>
+                <a href="https://linkedin.com/in/samarjit-santra-87339924b" class="fs-4" style="font-family: 'Playpen Sans', sans-serif;" target="_blank">
+                    <i class="bi bi-linkedin me-3" ></i>
+                    <span style="font-family: 'Playpen Sans', sans-serif;">LinkedIn</span>
+                </a>
+                <a href="https://github.com/Samarjit0323" class="fs-4" style="font-family: 'Playpen Sans', sans-serif;" target="_blank">
+                    <i class="bi bi-github me-3"></i>
+                    <span style="font-family: 'Playpen Sans', sans-serif;">GitHub</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
