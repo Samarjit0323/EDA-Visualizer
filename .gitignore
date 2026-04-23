@@ -1,2 +1,5 @@
 eda/
 __pycache__/
+test/__pycache__/
+helper/__pycache__/
+services/__pycache__/

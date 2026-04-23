@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container hero-section d-flex flex-column align-items-center justify-content-center">
+
+    <div class="glass-container" style="max-width: 95vw !important;">
+
+        <h2 class="me-4" style="font-family: 'Playpen Sans', sans-serif; color: aqua; text-align: center;">
+            Learn Statistical Concepts
+        </h2>
+        {% for type, detail in info.items() %}
+        <div class="mt-4 mb-5">
+
+            <h3 style="font-family: 'Playpen Sans', sans-serif; color: gold; text-align: center; margin-bottom: 25px;">
+                {{ type }}
+            </h3>
+
+            <!-- Grid -->
+            <div class="g-4 justify-content-center">
+
+                {% for sub_type, det in detail.items() %}
+                <div class="d-flex me-4"
+                    style="align-content: center; justify-content: flex-start; text-align: justify;">
+
+                    <div class="h-100 w-100 me-4"
+                        style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);">
+
+                        <div class="card-body text-center">
+
+                            <h5 class="card-title"
+                                style="font-family: 'Playpen Sans', sans-serif; color: aqua; text-align: justify;">
+                                {{ sub_type }}
+                            </h5>
+
+                            <p class="card-text"
+                                style="font-family: 'Source Code Pro', sans-serif; color: white; text-align: justify;">
+                                {{ det }}
+                            </p>
+                            {% if formula.get(sub_type) %}
+                            <div style="margin: 10px;
+                                        border-radius: 25px; 
+                                        padding: 7px; 
+                                        background: white;
+                                        display: inline-block;
+                                        border: 7px solid plum">
+                                <img src="{{ url_for('static', path=formula.get(sub_type)) }}" class="img-fluid"
+                                    style="max-width: 100%; height: auto; display: block; padding: 8px;">
+                            </div>
+                            {% endif %}
+                            {% if images.get(sub_type) %}
+                            <div style="border-radius: 25px; 
+                                        padding: 7px; 
+                                        background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+                                        display: inline-block;">
+                                <img src="{{ url_for('static', path=images.get(sub_type)) }}" class="img-fluid"
+                                    style="max-width: 100%; height: auto; border-radius: 23px; display: block;">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
