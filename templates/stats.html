@@ -4,61 +4,97 @@
 <div class="container hero-section d-flex flex-column align-items-center justify-content-center text-center">
     <div class="glass-container">
         <h2 style="font-family: 'Playpen Sans', sans-serif; color: aqua">Statistical Analysis</h2>
-        <a href="{{ url_for('learn_stats') }}"
-   class="btn mt-3"
-   style="
-        border: 1px solid rgba(0,255,255,0.6);
-        color: aqua;
-        border-radius: 30px;
-        padding: 10px 22px;
-        font-size: 16px;
+        <div class="d-flex justify-content-center gap-3 mb-4 mt-4">
+            <a href="{{ url_for('learn_stats')}}" class="btn" style="
+                border: 1px solid rgba(0,255,255,0.6);
+                color: aqua;
+                border-radius: 30px;
+                padding: 10px 22px;
+                font-size: 16px;
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.3s ease;
+            " onmouseover="
+                this.style.background='rgba(0,255,255,0.1)';
+                this.style.color='white';
+                this.style.transform='translateY(-2px)';
+            " onmouseout="
+                this.style.background='rgba(255,255,255,0.05)';
+                this.style.color='aqua';
+                this.style.transform='translateY(0)';
+            ">
+                <i class="bi bi-info-circle" style="font-size: 18px;"></i>
+                Know More
+            </a>
+            <a href="{{ url_for('download_stats_report', file_id=file_id) }}" class="btn" style="
+                border: 1px solid rgba(0,255,255,0.6);
+                color: aqua;
+                border-radius: 30px;
+                padding: 10px 22px;
+                font-size: 16px;
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.3s ease;
+                margin-left: 10px;
+            " onmouseover="
+                this.style.background='rgba(0,255,255,0.1)';
+                this.style.color='white';
+                this.style.transform='translateY(-2px)';
+            " onmouseout="
+                this.style.background='rgba(255,255,255,0.05)';
+                this.style.color='aqua';
+                this.style.transform='translateY(0)';
+            ">
+                <i class="fa-solid fa-cloud-arrow-down" style="font-size: 18px;"></i>
+                Download Stats Report
+            </a>
+        </div>
 
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-
-        transition: all 0.3s ease;
-   "
-   onmouseover="
-        this.style.background='rgba(0,255,255,0.1)';
-        this.style.color='white';
-        this.style.transform='translateY(-2px)';
-   "
-   onmouseout="
-        this.style.background='rgba(255,255,255,0.05)';
-        this.style.color='aqua';
-        this.style.transform='translateY(0)';
-   "
->
-    <i class="bi bi-info-circle" style="font-size: 18px;"></i>
-    Know More
-</a>
-        {% for feature, stats in stats.get_stats.items() %}
+        {% for feature, stat in stats.get_stats.items() %}
         <div class="row m-3" style="color: gold; font-family: 'Playpen Sans', sans serif; font-size: 20px;">
-            Feature : {{ feature | capitalize }}
+            Feature : {{ feature | capitalize }} [ {{ stats.features.get(feature) | capitalize }} ]
         </div>
         <div class="row">
-            {% for obj, val in stats.items() %}
+            {% if not stat %}
+            <small class="text-muted" style="font-family: 'Source Code Pro';">No statistics available for this
+                feature.</small>
+            {% endif %}
+            {% for obj, val in stat.items() %}
             <div class="col">
                 <div class="card">
                     <div class="flip-inner">
                         <!-- Front -->
                         <div class="flip-front">
                             <h3>{{ obj }}</h3>
+                            {% if obj=="Frequency Count" %}
+                            {{ val[0:3] }} ...
+                            <a href="#" class="btn btn-outline-light m-1 no-hover-btn openCatModal"
+                                data-categories='{{ val | tojson }}'
+                                style="border-color: aqua; border-radius: 30px; color: aqua">
+                                View Details
+                            </a>
+                            {% else %}
                             <p style="font-family: 'Source Code Pro';">{{ val }}</p>
                             <div class="info-btn">
                                 <i class="bi bi-info-circle"></i>
                             </div>
+                            {% endif %}
                         </div>
                         <!-- Back -->
                         <div class="flip-back">
                             <h5>{{ obj | capitalize }}</h3>
-                            <p class="m-0" style="font-family: 'Source Code Pro'; text-align: center; font-size: 13px;">{{ info.get(obj) }}</p>
-                            <button class="back-btn">Flip</button>
+                                <p class="m-0"
+                                    style="font-family: 'Source Code Pro'; text-align: center; font-size: 13px;">{{
+                                    info.get(obj) }}</p>
+                                <button class="back-btn">Flip</button>
                         </div>
                     </div>
                 </div>
@@ -66,29 +102,96 @@
             {% endfor %}
         </div>
         {% endfor %}
+        <a href="{{ url_for('action', file_id=file_id) }}" class="btn btn-outline-info"
+            style="border-radius: 20px; font-size: large;">Back</a>
     </div>
 </div>
 
+<div id="catModal" class="custom-modal" style="border: 1px aqua;">
+    <div class="modal-content-glass">
+
+        <span class="close-btn" id="closeModal">&times;</span>
+
+        <h4 style="font-family: 'Playpen Sans', sans-serif; color: aqua;">Frequency Count of Categories
+        </h4>
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="table table-bordered" style="font-size: larger; margin-top: 20px;">
+                <thead class="sticky-top" style="background-color: rgb(107, 0, 0);">
+                    <tr>
+                        <th style="color: gold;">Category</th>
+                        <th style="color: gold;">Frequency</th>
+                    </tr>
+                </thead>
+                <tbody id="catTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</div>
+
 <script>
-document.addEventListener("DOMContentLoaded", () => {
 
-    // flip forward (info icon)
-    document.querySelectorAll(".info-btn").forEach(btn => {
+    const modal = document.getElementById("catModal");
+    const closeBtn = document.getElementById("closeModal");
+    const tbody = document.getElementById("catTableBody");
+
+    // handle ALL buttons
+    document.querySelectorAll(".openCatModal").forEach(btn => {
         btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            btn.closest(".card").classList.add("flipped");
+            e.preventDefault();
+
+            const data = JSON.parse(btn.dataset.categories);
+
+            // clear old rows
+            tbody.innerHTML = "";
+
+            // insert new rows
+            data.forEach(([category, count]) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${category}</td>
+                        <td>${count}</td>
+                    </tr>
+                `;
+            });
+
+            modal.style.display = "block";
         });
     });
 
-    // flip back (back button)
-    document.querySelectorAll(".back-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            btn.closest(".card").classList.remove("flipped");
-        });
+    // close modal
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
     });
 
-});
+    // close when clicking outside
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // flip forward (info icon)
+        document.querySelectorAll(".info-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                btn.closest(".card").classList.add("flipped");
+            });
+        });
+
+        // flip back (back button)
+        document.querySelectorAll(".back-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                btn.closest(".card").classList.remove("flipped");
+            });
+        });
+
+    });
+
+
+
 </script>
-
 {% endblock %}

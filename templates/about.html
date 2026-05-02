@@ -17,23 +17,68 @@
         <div class="container mt-3" style="font-family: 'Playpen Sans', sans-serif;">
             <div class="row">
                 {% for category, feature_list in features.items() %}
-                    <div class="col-md-4 mb-4" style="text-align: left;">
-                        <h3 class="feature-heading" style="color: aqua;">{{ category }}</h3>
-                        <ul class="feature-list">
-                            {% for feature in feature_list %}
-                            <li class="feature-item" style="color: rgb(255, 231, 98);">
-                                <span class="feature-icon">
-                                    <i class="fa-solid fa-circle-check" style="color: rgb(255, 231, 98);" ></i>
-                                </span>
-                                {{ feature }}
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                <div class="col-md-4 mb-4" style="text-align: left;">
+                    <h3 class="feature-heading">
+                        {% if "stat" in category.lower() %}
+                        <a href="{{ url_for('learn_stats')}}" style="text-decoration: none; color: aqua;">{{ category
+                            }}</a>
+                        {% elif "visual" in category.lower() %}
+                        <a href="{{ url_for('learn_visuals')}}" style="text-decoration: none; color: aqua;">{{ category
+                            }}</a>
+                        {% elif "exp" in category.lower() %}
+                        <a href="{{ url_for('learn_eda')}}" style="text-decoration: none; color: aqua;">{{ category
+                            }}</a>
+                        {% else %}
+                        {{ category }}
+                        {% endif %}
+                    </h3>
+                    <ul class="feature-list">
+                        {% for feature in feature_list %}
+                        <li class="feature-item" style="color: rgb(255, 231, 98);">
+                            <span class="feature-icon">
+                                <i class="fa-solid fa-circle-check" style="color: rgb(255, 231, 98);"></i>
+                            </span>
+                            {{ feature }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
                 {% endfor %}
             </div>
         </div>
-        <p class="hero-subtitle mb-2" style="text-align: justify; font-size: 18px; color: white; font-family: 'Playpen Sans', sans-serif;">
+        <p class="hero-subtitle" style="text-align: left; font-size: 18px; color: white;">
+            The product also provides downloadable reports and visualizations, allowing users to easily share their
+            findings with others </p>
+        <div class="container mt-3" style="font-family: 'Playpen Sans', sans-serif; justify-content: left;">
+            <ul class="feature-list" style="text-align: left;">
+                <li style="color: rgb(255, 231, 98);">
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-circle-check" style="color: rgb(255, 231, 98);"></i>
+                    </span>
+                    Statistical analysis report
+                </li>
+                <li style="color: rgb(255, 231, 98);">
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-circle-check" style="color: rgb(255, 231, 98);"></i>
+                    </span>
+                    Visualizations in zipped format
+                </li>
+                <li style="color: rgb(255, 231, 98);">
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-circle-check" style="color: rgb(255, 231, 98);"></i>
+                    </span>
+                    EDA report
+                </li>
+                <li style="color: rgb(255, 231, 98);">
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-circle-check" style="color: rgb(255, 231, 98);"></i>
+                    </span>
+                    Overall summary report <em>(Coming Soon)</em>
+                </li>
+            </ul>
+        </div>
+        <p class="hero-subtitle mb-2"
+            style="text-align: justify; font-size: 18px; color: white; font-family: 'Playpen Sans', sans-serif;">
             <i class="fa-regular fa-clock me-4"></i>
             <span>More features coming soon...</span>
         </p>

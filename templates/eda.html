@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container hero-section d-flex flex-column align-items-center justify-content-center">
+    <div class="glass-container" style="width: 90%; max-width: 1200px; padding: 40px;">
+        <h2 style="font-family: 'Playpen Sans', sans-serif; color: aqua; text-align: center; margin-bottom: 30px;">Exploratory Data Analysis</h2>
+
+        <div class="d-flex justify-content-center gap-3 mb-4">
+            <a href="{{ url_for('learn_eda')}}" class="btn" style="
+                border: 1px solid rgba(0,255,255,0.6);
+                color: aqua;
+                border-radius: 30px;
+                padding: 10px 22px;
+                font-size: 16px;
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.3s ease;
+            " onmouseover="
+                this.style.background='rgba(0,255,255,0.1)';
+                this.style.color='white';
+                this.style.transform='translateY(-2px)';
+            " onmouseout="
+                this.style.background='rgba(255,255,255,0.05)';
+                this.style.color='aqua';
+                this.style.transform='translateY(0)';
+            ">
+                <i class="bi bi-info-circle" style="font-size: 18px;"></i>
+                Know More
+            </a>
+            <a href="{{ url_for('download_eda_report', file_id=file_id) }}" class="btn" style="
+                border: 1px solid rgba(0,255,255,0.6);
+                color: aqua;
+                border-radius: 30px;
+                padding: 10px 22px;
+                font-size: 16px;
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.3s ease;
+                margin-left: 10px;
+            " onmouseover="
+                this.style.background='rgba(0,255,255,0.1)';
+                this.style.color='white';
+                this.style.transform='translateY(-2px)';
+            " onmouseout="
+                this.style.background='rgba(255,255,255,0.05)';
+                this.style.color='aqua';
+                this.style.transform='translateY(0)';
+            ">
+                <i class="fa-solid fa-cloud-arrow-down" style="font-size: 18px;"></i>
+                Download EDA Report
+            </a>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px);">
+                    <h5 style="color: gold; font-family: 'Playpen Sans', sans-serif; text-align: center; margin-bottom: 15px;">
+                        <i class="bi bi-bar-chart-line" style="margin-right: 10px;"></i>Dimensions
+                    </h5>
+                    <div style="text-align: left;">
+                        {% for d in dim.keys() %}
+                        <p style="font-family:'Source Code Pro', monospace; color: white; font-size: 17px; margin: 5px 0; display: inline-block; margin-right: 20px;">
+                            <strong>{{ d }}</strong>: {{ dim.get(d) }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px);">
+                    <h5 style="color: gold; font-family: 'Playpen Sans', sans-serif; text-align: center; margin-bottom: 15px;">
+                        <i class="bi bi-clipboard-data" style="margin-right: 10px;"></i>Summary
+                    </h5>
+                    <div style="text-align: left;">
+                        {% for item, lst in results.items() %}
+                        <p style="font-family:'Source Code Pro', monospace; color: aqua; font-size: 16px; margin: 15px 0 15px 0; font-weight: bold;">{{ item | capitalize }}  [ Likely {{ eda.features.get(item) }} ]</p>
+                        {% for elem in lst %}
+                        <p style="font-family:'Source Code Pro', monospace; color: white; font-size: 14px; margin: 2px 0; padding-left: 10px;">{{ elem[0] }}: {{ elem[1] }}</p>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 255, 255, 0.3); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px);">
+                    <h5 style="color: gold; font-family: 'Playpen Sans', sans-serif; text-align: center; margin-bottom: 15px;">
+                        <i class="bi bi-lightbulb" style="margin-right: 10px;"></i>Conclusions
+                    </h5>
+                    <div style="text-align: left;">
+                        {% for item, lst in inferences.items() %}
+                        <p style="font-family:'Source Code Pro', monospace; color: aqua; font-size: 16px; margin: 10px 0 5px 0; font-weight: bold;">{{ item | capitalize }}</p>
+                        {% for elem in lst %}
+                        <p style="font-family:'Source Code Pro', monospace; color: white; font-size: 14px; margin: 2px 0; padding-left: 10px;">{{ elem }}</p>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="{{ url_for('action', file_id=file_id) }}" class="btn btn-outline-light no-hover-btn mt-3" style="border-radius: 30px; font-size: 20px; padding: 10px 20px;">Back</a>
+    </div>
+</div>
+{% endblock %}

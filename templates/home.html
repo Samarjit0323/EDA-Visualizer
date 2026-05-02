@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container hero-section d-flex flex-column align-items-center justify-content-center text-center">
-    
+<div class="container hero-section d-flex flex-column align-items-center justify-content-center text-center">
+
     <div class="glass-container">
         <h1 class="hero-title">EDA Visualizer</h1>
 
@@ -10,8 +10,10 @@
         </p>
 
         <div class="mt-4">
-            <a href="#" class="btn btn-outline-light btn-lg m-3 no-hover-btn" style="border-color: aqua; border-radius: 30px; color: aqua" id="openUploadModal">Upload Dataset</a>
-            <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg no-hover-btn" style="border-color: aqua; border-radius: 30px; color: aqua">Learn More</a>
+            <a href="#" class="btn btn-outline-light btn-lg m-3 no-hover-btn"
+                style="border-color: aqua; border-radius: 30px; color: aqua" id="openUploadModal">Upload Dataset</a>
+            <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg no-hover-btn"
+                style="border-color: aqua; border-radius: 30px; color: aqua">Learn More</a>
         </div>
     </div>
 
@@ -32,15 +34,61 @@
                 </label>
                 <input class="form-control" id="formFileLg" type="file" name="file" style="display: none;">
             </div>
-            <a href="{{ url_for('action')}}" class="btn btn-outline-light mt-4 no-hover-btn" style="border-color: aqua; border-radius: 30px; color: aqua; font-size: 18px;">
-                <!-- <button type="submit" class="btn btn-outline-light mt-4 no-hover-btn" style="border-color: aqua; border-radius: 30px; color: aqua; font-size: 18px;"> -->
-                 <i class="bi bi-upload me-2"></i>
+            <div id="uploadError" style="font-size: 18px;display: none; color: rgb(255, 76, 76); margin-top: 10px;">
+            </div>
+
+            <button type="submit" class="submit btn btn-outline-light mt-4 no-hover-btn"
+                style="border-color: aqua; border-radius: 30px; color: aqua; font-size: 18px;">
+                <i class="bi bi-upload me-2"></i>
                 Upload
-            <!-- </button> -->
+            </button>
             </a>
-            
+
         </form>
 
     </div>
 </div>
+
+<!-- Upload Handler -->
+<script type="module">
+    const uploadForm = document.getElementById("uploadForm");
+
+    uploadForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const fileInput = document.getElementById("formFileLg");
+        if (fileInput.files.length === 0) {
+            const errorDiv = document.getElementById("uploadError");
+            errorDiv.textContent = "Please select a file to upload.";
+            errorDiv.style.display = "block";
+            const container = document.querySelector(".file-upload-container");
+            container.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
+            setTimeout(() => {
+                container.style.backgroundColor = "";
+            }, 2500);
+            return;
+        } else {
+            document.getElementById("uploadError").style.display = "none";
+        }
+
+        const formData = new FormData(uploadForm);
+
+        try {
+            const response = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            if (response.ok) {
+                window.location.href = `/${data.fileid}/action`;
+            } else {
+                alert("Upload failed");
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong");
+        }
+    });
+</script>
 {% endblock %}

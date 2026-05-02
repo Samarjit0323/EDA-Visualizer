@@ -36,11 +36,11 @@
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <i class="bi bi-box-arrow-in-right me-2" style="color: white; "></i>
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <i class="bi bi-person-plus me-2" style="color: white; "></i>
-                    <a class="nav-link" href="/register">Register</a>
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <i class="bi bi-envelope me-2" style="color: white; "></i>
@@ -53,15 +53,17 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="learnDropdown">
                         <a href="{{ url_for('learn_stats') }}" class="dropdown-item hover-underline m-2">  Statistical Analysis </a>
-                        <a href="" class="dropdown-item hover-underline m-2">  Exploratory Data Analysis (EDA)</a>
-                        <a href="" class="dropdown-item hover-underline m-2">  Visualizations </a>
+                        <a href="{{ url_for('learn_eda') }}" class="dropdown-item hover-underline m-2">  Exploratory Data Analysis (EDA)</a>
+                        <a href="{{ url_for('learn_visuals') }}" class="dropdown-item hover-underline m-2">  Visualizations </a>
                     </div>
                 </li>
             </ul>
         </div>
     </nav>   
+    
     {% block content %}
     {% endblock %}
+
     <footer class="mini-footer fixed-bottom">
         <div class="footer-inner">
             <span>© 2026 EDA Visualizer</span>

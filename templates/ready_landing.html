@@ -4,11 +4,14 @@
     <div class="glass-container">
         <div class="upload-status">
             <h2 class="status-title">Dataset Uploaded</h2>
-
             <p class="status-meta">
-                <span class="file-name mb-3">{{ eda.filename }}</span>
-                <span class="file-type mt-3">{{ eda.ext | upper }}</span>
+                    <span class="file-name mb-3">{{ eda.filename }}</span>
+                    <span class="file-type mt-3">{{ eda.ext | upper }}</span>
             </p>
+            <a href="{{ url_for('download_file', file_id=file_id) }}" target="_blank">
+                <i class="fa-solid fa-cloud-arrow-down" style="color: aqua; font-size: 35px;"></i>
+            </a>
+
         </div>
         <div class="row justify-content-center" style="color: aliceblue; font-size: larger;">
             <div class="col-auto me-3">
@@ -25,11 +28,11 @@
             {% endfor %}
         </div>
         <div class="mt-4">
-            <a href="#" class="btn btn-outline-light btn-lg m-3 no-hover-btn"
-                style="border-color: aqua; border-radius: 30px; color: aqua" id="openUploadModal">Perform EDA</a>
-            <a href="{{ url_for('stats')}}" class="btn btn-outline-light btn-lg m-3 no-hover-btn"
+            <a href="{{ url_for('eda', file_id=file_id)}}" class="btn btn-outline-light btn-lg m-3 no-hover-btn"
+                style="border-color: aqua; border-radius: 30px; color: aqua">Perform EDA</a>
+            <a href="{{ url_for('stats', file_id=file_id) }}" class="btn btn-outline-light btn-lg m-3 no-hover-btn"
                 style="border-color: aqua; border-radius: 30px; color: aqua">Statistical Analysis</a>
-            <a href="#" class="btn btn-outline-light btn-lg m-3 no-hover-btn"
+            <a href="{{ url_for('visuals', file_id=file_id) }}" class="btn btn-outline-light btn-lg m-3 no-hover-btn"
                 style="border-color: aqua; border-radius: 30px; color: aqua">Visualizations</a>
         </div>
     </div>
