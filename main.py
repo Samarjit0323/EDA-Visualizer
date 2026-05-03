@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from services.eda import EDA
 from services.stats import StatsAnalyser
 from services.visuals import Visualization
-from helper.file import file_to_df, generate_stats_report, generate_visual_report, generate_eda_report
+from helper.file import file_to_df, generate_stats_report, generate_visual_report, generate_eda_report, generate_report
 from helper.info import get_stats_info, get_stats_detailed_info, get_static_media, get_formula
 import pandas as pd
 from io import BytesIO
@@ -88,14 +88,43 @@ def download_visual_report(request: Request, file_id: UUID):
 @app.get("/download/{file_id}/eda_report", response_class=FileResponse, name="download_eda_report")
 def download_eda_report(request: Request, file_id: UUID):
     filepath=os.path.join(BASE_DIR, f"datasets/{file_id}.csv")
-    df, _, _ =file_to_df(filepath)
-    eda=EDA(df, "", "")
+    df, filename, ext =file_to_df(filepath)
+    eda=EDA(df, filename, ext)
     dim=eda.get_dimensions
     features=eda.features
     results, inferences=eda.get_results()
     file=generate_eda_report(file_id, results, inferences, dim, features)
     if os.path.exists(file):
         return FileResponse(file, media_type="application/pdf", filename=f"{file_id}_eda_report.pdf")
+    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="There was an error generating the report.")
+
+
+@app.get("/download/{file_id}/final_report", name="download_final_report")
+def download_final_report(request: Request, file_id: UUID):
+    filepath=os.path.join(BASE_DIR, f"datasets/{file_id}.csv")
+    df, filename, ext =file_to_df(filepath)
+
+    eda=EDA(df, filename, ext)
+    dim=eda.get_dimensions
+    features=eda.features
+    results, inferences=eda.get_results()
+    eda_file=generate_eda_report(file_id, results, inferences, dim, features)
+
+    stats=StatsAnalyser(df)
+    info=stats.get_stats
+    features=stats.features
+    stats_file=generate_stats_report(file_id, info, features)
+
+    viz=Visualization(df)
+    visuals=viz.get_all()
+    viz_file,path=generate_visual_report(file_id, visuals)
+    if path and os.path.exists(path):
+        shutil.rmtree(path)
+
+    final_path=generate_report(file_id=file_id, eda_path=eda_file, visuals_path=viz_file, stats_path=stats_file)
+
+    if final_path and os.path.exists(final_path):
+        return FileResponse(final_path, media_type="application/zip", filename=f"{file_id}_report.zip")
     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="There was an error generating the report.")
 
 @app.get("/{file_id}/action", name="action")

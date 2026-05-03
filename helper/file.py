@@ -6,6 +6,8 @@ from fpdf import FPDF
 from pathlib import Path
 from base64 import b64decode
 import shutil
+from PyPDF2 import PdfMerger 
+from zipfile import ZipFile
 
 BASE_DIR=Path(__file__).resolve().parent.parent
 
@@ -146,3 +148,19 @@ def generate_eda_report(file_id: str, results: dict, inferences: dict, dim: tupl
                 pdf_report.multi_cell(200, 10, align="L", txt=line) 
     pdf_report.output(pdf_filepath)
     return Path(pdf_filepath) if os.path.exists(pdf_filepath) else None
+
+def generate_report(file_id: str, eda_path: Path, stats_path: Path, visuals_path: Path) -> Path | None:
+    merger=PdfMerger()
+    merger.append(eda_path)
+    merger.append(stats_path)
+    finalpath=os.path.join(BASE_DIR, "reports",f"{file_id}_final_report.pdf")
+    merger.write(finalpath)
+    merger.close()
+    
+    zip_path = os.path.join(BASE_DIR, "reports","final_report.zip")
+    with ZipFile(zip_path,'w') as zip:
+        zip.write(finalpath, arcname=f"{file_id}_final_report.pdf")
+        zip.write(visuals_path, arcname=f"{file_id}_visuals.zip")
+    return zip_path
+
+    

@@ -1,19 +1,19 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container hero-section d-flex flex-column align-items-center justify-content-center text-center" style="margin-bottom: 20px;">
+<div class="container hero-section d-flex flex-column align-items-center justify-content-center text-center"
+    style="margin-bottom: 20px;">
 
     <div class="glass-container">
         <!-- <img src="{{ url_for('static', path='images/oops.png')}}" alt="OOPS!"> -->
-         <i class="bi bi-bug-fill" style="font-size: 6rem; color: gold; margin-bottom: 20px;"></i>
+        <i class="bi bi-bug-fill" style="font-size: 6rem; color: gold; margin-bottom: 20px;"></i>
         <h1 class="hero-title">{{ title }}</h1>
-        <p class="hero-description" style="color: white; font-family: 'Source Code Pro', monospace; font-size: 18px;">{{ message }}
-            <br>
-            Please wait and try again.
-        </p>
+        <p class="hero-description" style="color: white; font-family: 'Source Code Pro', monospace; font-size: 18px;">{{
+            message }}</p>
 
-        <a href="/" class="btn btn-outline-light no-hover-btn mt-3" style="border-radius: 30px; font-size: 20px; padding: 10px 20px;">Back to Home</a>
-        </div>
-        </div>
+        <a href="/" class="btn btn-outline-light no-hover-btn mt-3"
+            style="border-radius: 30px; font-size: 20px; padding: 10px 20px;">Back to Home</a>
+    </div>
+</div>
 
 {% endblock %}

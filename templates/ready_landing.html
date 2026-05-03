@@ -8,10 +8,13 @@
                     <span class="file-name mb-3">{{ eda.filename }}</span>
                     <span class="file-type mt-3">{{ eda.ext | upper }}</span>
             </p>
-            <a href="{{ url_for('download_file', file_id=file_id) }}" target="_blank">
+            <a href="{{ url_for('download_file', file_id=file_id) }}">
                 <i class="fa-solid fa-cloud-arrow-down" style="color: aqua; font-size: 35px;"></i>
             </a>
-
+            <br>
+            <a href="{{ url_for('download_final_report', file_id=file_id)}}" >
+                Your report is ready! Download now!
+            </a>
         </div>
         <div class="row justify-content-center" style="color: aliceblue; font-size: larger;">
             <div class="col-auto me-3">
