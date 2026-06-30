@@ -20,6 +20,10 @@ class EDA:
     def get_dimensions(self):
         return {"Rows":self.rowcount,"Columns":self.colcount}
     
+    def get_dtype(self):
+        for col in self.df.columns:
+            self.results[col].append(("Data Type", self.df[col].dtype))
+
     def missing_values(self):
         for col in self.df.columns:
             self.results[col].append(("Total Number of Missing Values",self.df[col].isna().sum()))
@@ -64,5 +68,6 @@ class EDA:
         self.get_groups()
         self.collinearity()
         self.get_outliers()
+        self.get_dtype()
         return self.results, self.inferences
 
